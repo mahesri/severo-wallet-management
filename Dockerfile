@@ -1,35 +1,30 @@
-FROM php:8.3-cli
+FROM dunglas/frankenphp:php8.3
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libsqlite3-dev \
+# Install PHP extensions required by Laravel + SQLite
+RUN install-php-extensions \
+    pdo_sqlite \
+    sqlite3 \
     zip
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_sqlite
+WORKDIR /app
 
-# Install Composer
+# Copy Composer from the official Composer image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www
-
-# Copy project files
+# Copy project
 COPY . .
 
-# Install Laravel dependencies
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Create SQLite database if it doesn't exist
-RUN touch database/database.sqlite
+# Create SQLite database
+RUN mkdir -p database \
+    && touch database/database.sqlite
 
-# Cache Laravel configuration
+# Cache configuration
 RUN php artisan config:clear
+RUN php artisan route:clear
 
-# Expose the port Render will use
-EXPOSE 10000
+EXPOSE 8080
 
-# Start Laravel
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=8080"]
