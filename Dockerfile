@@ -26,3 +26,10 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+RUN install-php-extensions \
+    pdo_sqlite \
+    sqlite3 \
+    zip \
+    pcntl \
+    posix
