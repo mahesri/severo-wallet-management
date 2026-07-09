@@ -33,3 +33,5 @@ RUN install-php-extensions \
     zip \
     pcntl \
     posix
+
+RUN setcap -r /usr/local/bin/frankenphp || true
