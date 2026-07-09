@@ -1,15 +1,13 @@
 <?php
 
 return [
-
-    'paths' => [
-        'api/*',
-        'sanctum/csrf-cookie',
-    ],
+    'paths' => ['api/*', 'transactions', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://spa-severo.vercel.app/'],
+    'allowed_origins' => [
+        'https://spa-severo.vercel.app',
+    ],
 
     'allowed_origins_patterns' => [],
 
@@ -20,5 +18,4 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
-
 ];
