@@ -1,6 +1,12 @@
-.git
-.github
+.env
+.env.*
 vendor
 node_modules
-storage/logs
-.env
+.git
+.github
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+tests
+*.md

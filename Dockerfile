@@ -1,6 +1,5 @@
 FROM dunglas/frankenphp:php8.3
 
-# Install PHP extensions required by Laravel + SQLite
 RUN install-php-extensions \
     pdo_sqlite \
     sqlite3 \
@@ -8,23 +7,22 @@ RUN install-php-extensions \
 
 WORKDIR /app
 
-# Copy Composer from the official Composer image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy project
+# Copy dependency manifests first for better layer caching
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+
+# Now copy the rest of the app
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer dump-autoload --optimize \
+    && mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Create SQLite database
-RUN mkdir -p database \
-    && touch database/database.sqlite
-
-# Cache configuration
-RUN php artisan config:clear
-RUN php artisan route:clear
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
 
-CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=8080"]
+ENTRYPOINT ["/entrypoint.sh"]
