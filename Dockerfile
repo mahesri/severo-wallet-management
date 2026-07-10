@@ -1,10 +1,5 @@
 FROM dunglas/frankenphp:php8.3
 
-RUN install-php-extensions \
-    pdo_sqlite \
-    sqlite3 \
-    zip
-
 WORKDIR /app
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
