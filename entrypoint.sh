@@ -13,5 +13,5 @@ echo "== Running migrations =="
 php artisan migrate --force
 echo "== Migrations done =="
 
-echo "== DEBUG: running worker script directly =="
-php public/frankenphp-worker.php
+echo "== Starting Octane on port ${PORT:-8080} =="
+exec php artisan octane:frankenphp --host=0.0.0.0 --port="${PORT:-8080}"
