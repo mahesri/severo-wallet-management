@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class InvestedRepository implements InvestedRepositoryInterface
 {
 
-    public function add(Invested $invested){
+    public function add(Invested|\App\Models\Investeds $invested){
 
         Invested::create([
             'amount' => $invested->amount,

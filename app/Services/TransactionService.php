@@ -4,8 +4,7 @@
 
     use App\Models\Expense;
     use App\Models\Incomes;
-    use App\Models\Investeds;
-    use App\Models\Invests;
+    use App\Models\Invested;
     use App\Models\Transactions;
     use App\Repositories\ExpenseRepository;
     use App\Repositories\InvestedRepository;
@@ -55,7 +54,7 @@ class TransactionService implements TransactionServiceInterface
         }
         if (isset($transaction->allocate) == true){
 
-            $newInvest = new Investeds();
+            $newInvest = new Invested();
             $newInvest->amount = $transaction->allocate;
             $newInvest->cr_dr = $transaction->cr_dr;
             $newInvest->instrument = $transaction->allocated_purpose;
