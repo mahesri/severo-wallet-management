@@ -1,6 +1,5 @@
 FROM dunglas/frankenphp:php8.3
 
-# This MUST come before composer install
 RUN install-php-extensions \
     pdo_sqlite \
     sqlite3 \
@@ -9,6 +8,15 @@ RUN install-php-extensions \
     posix
 
 RUN setcap -r /usr/local/bin/frankenphp || true
+
+# Force PHP to print all errors to stderr so Render's logs catch them
+RUN { \
+    echo "display_errors=1"; \
+    echo "display_startup_errors=1"; \
+    echo "error_reporting=E_ALL"; \
+    echo "log_errors=1"; \
+    echo "error_log=/dev/stderr"; \
+    } > /usr/local/etc/php/conf.d/zz-debug-errors.ini
 
 WORKDIR /app
 
