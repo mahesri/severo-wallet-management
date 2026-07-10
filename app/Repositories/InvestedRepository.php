@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Investeds;
+use App\Models\Invested;
 use App\Repositories\Interfaces\InvestedRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class InvestedRepository implements InvestedRepositoryInterface
 {
 
-    public function add(Investeds $invested){
+    public function add(Invested $invested){
 
-        Investeds::create([
+        Invested::create([
             'amount' => $invested->amount,
             'instrument' => $invested->instrument,
             'cr_dr'=> $invested->cr_dr,
@@ -21,7 +21,7 @@ class InvestedRepository implements InvestedRepositoryInterface
 
     public function getTotalBtc() : int
     {
-        $btc = DB::table('investeds')
+        $btc = DB::table('invested')
             ->where('instrument', 'btc')
             ->selectRaw('SUM(amount) as total_btc')->first();
 
@@ -33,7 +33,7 @@ class InvestedRepository implements InvestedRepositoryInterface
     public function getTotalGold() : int
     {
 
-        $gold = DB::table('investeds')
+        $gold = DB::table('invested')
             ->where('instrument', 'gold')
             ->selectRaw('SUM(amount) as total_gold')->first();
 
@@ -45,7 +45,7 @@ class InvestedRepository implements InvestedRepositoryInterface
     public function getTotalSavingForMarried() : int
     {
 
-        $savingForMarried = DB::table('investeds')
+        $savingForMarried = DB::table('invested')
             ->where('instrument', 'saving_for_married')
             ->selectRaw('SUM(amount) as total_savingForMarried')->first();
 

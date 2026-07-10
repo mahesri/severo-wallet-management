@@ -40,5 +40,4 @@ class ExpenseRepository implements ExpanseRepositoryInterface
 
         return $totalExpenseDebit;
     }
-
 }
